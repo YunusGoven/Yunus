@@ -1,225 +1,101 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="images/logo.jpg">
-    <title>E. Global Rénov - Entreprise de rénovation</title>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="css/style.css"/>
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="yunusbackground">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <title>yunusbackground</title>
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <script>
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
+  <!-- This script installs service_worker.js to provide PWA functionality to
+       application. For more information, see:
+       https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <script>
+    var serviceWorkerVersion = null;
+    var scriptLoaded = false;
+    function loadMainDartJs() {
+      if (scriptLoaded) {
+        return;
+      }
+      scriptLoaded = true;
+      var scriptTag = document.createElement('script');
+      scriptTag.src = 'main.dart.js';
+      scriptTag.type = 'application/javascript';
+      document.body.append(scriptTag);
+    }
 
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 150;
-
-                if (elementTop < windowHeight - elementVisible) {
-                reveals[i].classList.add("active");
-                } else {
-                reveals[i].classList.remove("active");
+    if ('serviceWorker' in navigator) {
+      // Service workers are supported. Use them.
+      window.addEventListener('load', function () {
+        // Wait for registration to finish before dropping the <script> tag.
+        // Otherwise, the browser will load the script multiple times,
+        // potentially different versions.
+        var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
+        navigator.serviceWorker.register(serviceWorkerUrl)
+          .then((reg) => {
+            function waitForActivation(serviceWorker) {
+              serviceWorker.addEventListener('statechange', () => {
+                if (serviceWorker.state == 'activated') {
+                  console.log('Installed new service worker.');
+                  loadMainDartJs();
                 }
+              });
             }
-        }
+            if (!reg.active && (reg.installing || reg.waiting)) {
+              // No active web worker and we have installed or are installing
+              // one for the first time. Simply wait for it to activate.
+              waitForActivation(reg.installing || reg.waiting);
+            } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
+              // When the app updates the serviceWorkerVersion changes, so we
+              // need to ask the service worker to update.
+              console.log('New service worker available.');
+              reg.update();
+              waitForActivation(reg.installing);
+            } else {
+              // Existing service worker is still good.
+              console.log('Loading app from service worker.');
+              loadMainDartJs();
+            }
+          });
 
-        window.addEventListener("scroll", reveal);
-    </script>
-    <header>
-        <a href="#" ><img class="logo" src="images/logo.jpg" alt="Global Rénov"/></a>
-
-        <input type="checkbox" id="menu-bar">
-        <label for="menu-bar" class="fas fa-bars"></label>
-        
-        <nav class="navbar">
-            <a href="#home">Accueil</a>
-            <a href="#realisations">Réalisations</a>
-            <a href="#services">Services</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    
-    </header>
-
-    <section class="home" id="home">
-        <div class="content">
-            <h3>
-                E. Global Rénov
-            </h3>
-            <p>Entreprise de <span>rénovation</span> et de <span>parachèvement</span></p>
-            <a class="btn" href="#contact">Contactez-nous</a>
-        </div>
-    </section>
-
-    <section class="realisations reveal" id="realisations">
-        <h1 class="heading">Réalisations</h1>
-        <div class="box-container">
-            <div class="box">
-                <img src="images/flemalle-sabl/flemalle1.jpg" alt="flemalle1">
-                <h3>Chantier : Flémalle</h3>
-                <p>Tâches effectuées : Sablage - Rejointayage - Rettoyage de façade</p>
-                <a href="#" class="btn">Détail</a>
-            </div>
-        </div>
-
-        <div class="box-container">
-            <div class="box">
-                <img src="images/lincent/lincent.jpg" alt="lincent1">
-                <h3>Chantier : Musée de la vie d’autrefois et du tarare à Lincent</h3>
-                <p>Tâches effectuées : Hydrosablage - Rejointoyage - Hydrofuge</p>
-                <a href="#" class="btn">Détail</a>
-            </div>
-        </div>
-
-        <div class="box-container">
-            <div class="box">
-                <img src="images/vélodrome/velodrome1.jpg" alt="velodrome">
-                <h3>Chantier : Vélodrome d'Anvers</h3>
-                <p>Tâches effectuées : Pose de crépis brossé sur insolant de 14cm d’épaisseur - Pose  de brique de parement sur insolant 14cm </p>
-                <a href="#" class="btn">Détail</a>
-            </div>
-        </div>
-
-        <div class="box-container">
-            <div class="box">
-                <img src="images/liers/liers.jpg" alt="liers">
-                <h3>Chantier : Liers</h3>
-                <p>Tâches effectuées : Pose de crépis sur isolant - Peinture pierre bleu - Réparation béton - Hydrosablage des moellons </p>
-                <a href="#" class="btn">Détail</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="services reveal" id="services">
-        <h1 class="heading">Services</h1>
-        <div class="box-container">
-            <div class="box">
-                <h3 class="title">Isolation Crépis</h3>
-            </div>
-        </div>
-        <div class="box-container">
-            <div class="box">
-                <h3 class="title">Sablage</h3>
-            </div>
-        </div>
-        <div class="box-container">
-            <div class="box">
-                <h3 class="title">Rejointayage</h3>
-            </div>
-        </div>
-        <div class="box-container">
-            <div class="box">
-                <h3 class="title">Hydrofuge</h3>
-            </div>
-        </div>
-        <div class="box-container">
-            <div class="box">
-                <h3 class="title">Peinture intérieur et extérieur</h3>
-            </div>
-        </div>
-        <div class="box-container">
-            <div class="box">
-                <h3 class="title">Chape, Carrelage </h3>
-            </div>
-        </div>
-        <div class="box-container">
-            <div class="box">
-                <h3 class="title">Résine époxy</h3>
-            </div>
-        </div>
-
-    </section>
-
-    <section class="contact reveal" id="contact">
-
-        <div class="image">
-            <img src="images/logo.jpg" alt="Global renov">
-            <span>Tél: </span> <a href="tel:+32488487426">+32(0) 488 48 74 26</a>
-            <br>
-            <span>Mail: </span> <a href="mailto:info@grenov.be">info@grenov.be</a>
-        </div>
-    
-        <form action="">
-    
-            <h1 class="heading">contactez nous</h1>
-    
-            <div class="inputBox">
-                <input type="text" required>
-                <label>nom</label>
-            </div>
-    
-            <div class="inputBox">
-                <input type="email" required>
-                <label>email</label>
-            </div>
-    
-            <div class="inputBox">
-                <input type="number" required>
-                <label>téléphone</label>
-            </div>
-    
-            <div class="inputBox">
-                <textarea required name="" id="" cols="30" rows="10"></textarea>
-                <label>message</label>
-            </div>
-    
-            <input type="submit" class="btn" value="Envoyer message">
-    
-        </form>
-    
-    </section>
-
-    <div class="footer">
-
-        <div class="box-container">
-    
-            <div class="box">
-                <h3>Global Rénov</h3>
-                <p>Entreprise de rénovation et de parachèvement</p>
-            </div>
-    
-            <div class="box">
-                <h3>Menu</h3>
-                <a href="#home">Accueil</a>
-                <a href="#realisations">Réalisations</a>
-                <a href="#services">Services</a>
-                <a href="#contact">Contact</a>
-            </div>
-    
-            <div class="box">
-                <h3>Services</h3>
-                <p>-> Isolation Crépis<br>
-                    -> sablage<br>
-                    -> rejointayage<br>
-                    -> hydrofuge <br>
-                    -> peinture intérieur et extérieur <br>
-                    -> chape, carrelage <br>
-                    -> résine époxy</p>
-            </div>
-    
-            <div class="box">
-                <h3>Informations</h3>
-                <div class="info">
-                    <i class="fas fa-phone"></i>
-                    <a href="tel:+32488487426">+32(0) 488 48 74 26</a>
-                </div>
-                <div class="info">
-                    <i class="fas fa-envelope"></i>
-                    <a href="mailto:info@grenov.be">info@grenov.be</a>
-                </div>
-                <div class="info">
-                    <i class="fa-brands fa-facebook"></i>
-                    <a href="https://www.facebook.com/eglobalrenov">Global Rénov</a>
-                </div>
-            </div>
-    
-        </div>
-    
-    </div>
-
+        // If service worker doesn't succeed in a reasonable amount of time,
+        // fallback to plaint <script> tag.
+        setTimeout(() => {
+          if (!scriptLoaded) {
+            console.warn(
+              'Failed to load app from service worker. Falling back to plain <script> tag.',
+            );
+            loadMainDartJs();
+          }
+        }, 4000);
+      });
+    } else {
+      // Service workers not supported. Just drop the <script> tag.
+      loadMainDartJs();
+    }
+  </script>
 </body>
 </html>
